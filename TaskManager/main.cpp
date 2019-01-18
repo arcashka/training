@@ -2,8 +2,8 @@
 #include <iostream>
 #include <string>
 
-#include "TaskManager.h"
-#include "Task.h"
+#include "taskManager.h"
+#include "task.h"
 
 int main()
 {
@@ -12,5 +12,8 @@ int main()
 	manager.addTask(createTask([](const std::string& text, int taskNumber) {
 		std::cout << text + " " + std::to_string(taskNumber) << std::endl;
 	}, "task", 2));
-	manager.execute();
+
+	while(!manager.isFinished())
+		std::this_thread::sleep_for(std::chrono::milliseconds(100));
+
 }

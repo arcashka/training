@@ -12,8 +12,11 @@ add_executable(SumParallel ${SUM_PARALLEL_SOURCE})
 
 set(TASK_MANAGER_SOURCE
 	${PROJECT_SOURCE_DIR}/TaskManager/main.cpp
-	${PROJECT_SOURCE_DIR}/TaskManager/TaskManager.h
-	${PROJECT_SOURCE_DIR}/TaskManager/TaskManager.cpp
-	${PROJECT_SOURCE_DIR}/TaskManager/Task.h
+	${PROJECT_SOURCE_DIR}/TaskManager/taskManager.h
+	${PROJECT_SOURCE_DIR}/TaskManager/taskManager.cpp
+	${PROJECT_SOURCE_DIR}/TaskManager/task.h
+	${PROJECT_SOURCE_DIR}/TaskManager/worker.h
+	${PROJECT_SOURCE_DIR}/TaskManager/worker.cpp
+	${PROJECT_SOURCE_DIR}/TaskManager/blockingQueue.h
 )
 add_executable(TaskManager ${TASK_MANAGER_SOURCE})
