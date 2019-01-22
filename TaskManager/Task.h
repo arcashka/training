@@ -18,8 +18,7 @@ private:
 };
 
 template<typename T, class... Args>
-std::unique_ptr<Task> createTask(const T &lambda, Args... args)
-{
+std::unique_ptr<Task> createTask(const T &lambda, Args... args) {
 	const auto func = std::bind(lambda, args...);
 	return std::make_unique<Task>(func);
 }

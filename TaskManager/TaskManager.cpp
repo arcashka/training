@@ -17,7 +17,7 @@ void TaskManager::addTask(std::shared_ptr<Task> task) {
 				break;
 		}
 		if (!added)
-			std::this_thread::sleep_for(std::chrono::seconds(1));
+			std::this_thread::sleep_for(std::chrono::milliseconds(100));
 	}
 }
 
@@ -31,8 +31,7 @@ bool TaskManager::isFinished() {
 	return allDone;
 }
 
-void TaskManager::stopFreeWorkers()
-{
+void TaskManager::stopFreeWorkers() {
 	for (const auto& worker : workers)
 		if (!worker->isStopped() && worker->isFree())
 			worker->stop();

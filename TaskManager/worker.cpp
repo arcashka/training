@@ -29,13 +29,11 @@ void Worker::stop() {
 	thread.join();
 }
 
-bool Worker::isStopped()
-{
+bool Worker::isStopped() {
 	return stopped;
 }
 
-bool Worker::isFree()
-{
+bool Worker::isFree() {
 	return tasks.empty();
 }
 
@@ -47,7 +45,8 @@ void Worker::execute() {
 
 		while (!tasks.empty())
 		{
-			std::cout << "Running task on " + name + " worker" << std::endl;
+			if (!name.empty())
+				std::cout << "Running task on " + name + " worker" << std::endl;
 			tasks.pop()->execute();
 		}
 		std::this_thread::sleep_for(std::chrono::seconds(1));

@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.12)
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 include_directories(${PROJECT_SOURCE_DIR})
@@ -22,6 +22,8 @@ set_target_properties(task_manager PROPERTIES
 
 set(WEB_SERVER_SOURCE
 	"${PROJECT_SOURCE_DIR}/WebServer/main.cpp"
+	"${PROJECT_SOURCE_DIR}/WebServer/webServer.cpp"
+	"${PROJECT_SOURCE_DIR}/WebServer/webServer.h"
 )
 add_executable(web_server ${WEB_SERVER_SOURCE})
-target_link_libraries(web_server task_manager)
+target_link_libraries(web_server task_manager wsock32)
