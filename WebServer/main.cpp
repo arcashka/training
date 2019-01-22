@@ -2,8 +2,8 @@
 #include <iostream>
 #include <string>
 
-#include "taskManager.h"
-#include "task.h"
+#include "TaskManager/taskManager.h"
+#include "TaskManager/task.h"
 
 int main()
 {

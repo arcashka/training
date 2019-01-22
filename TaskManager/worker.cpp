@@ -1,11 +1,13 @@
 #include "worker.h"
 
 #include "task.h"
+#include <iostream>
+#include <string>
 
 
-Worker::Worker(const size_t max)
-	: max(max)
-	, running(false)
+Worker::Worker(const std::string name, const size_t max)
+	: name(name)
+	, max(max)
 	, stopped(false)
 {
 	thread = std::thread(&Worker::execute, this);
@@ -15,20 +17,21 @@ bool Worker::tryAddTask(std::shared_ptr<Task> task) {
 	if (tasks.size() >= max)
 		return false;
 	tasks.add(task);
-	return true;
-}
-
-void Worker::run() {
-	running = true;
-	if (stopped)
-	{
+	if (stopped) {
 		stopped = false;
-		thread.join();
+		thread = std::thread(&Worker::execute, this);
 	}
+	return true;
 }
 
 void Worker::stop() {
 	stopped = true;
+	thread.join();
+}
+
+bool Worker::isStopped()
+{
+	return stopped;
 }
 
 bool Worker::isFree()
@@ -41,14 +44,13 @@ void Worker::execute() {
 	{
 		if (stopped)
 			return;
-		if (running) {
-			while (!tasks.empty())
-				tasks.pop()->execute();
-			running = false;
+
+		while (!tasks.empty())
+		{
+			std::cout << "Running task on " + name + " worker" << std::endl;
+			tasks.pop()->execute();
 		}
-		else {
-			std::this_thread::sleep_for(std::chrono::seconds(1));
-		}
+		std::this_thread::sleep_for(std::chrono::seconds(1));
 	}
 }
 

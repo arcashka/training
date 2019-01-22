@@ -1,16 +1,14 @@
 #include "taskManager.h"
 #include "task.h"
 
+#include <string>
+
 TaskManager::TaskManager() {
 	for (int i = 0; i < 4; ++i)
-		workers.emplace_back(std::make_unique<Worker>(3));
-	workers.front()->run();
-	thread = std::thread(&TaskManager::execute, this);
-//	thread.join();
+		workers.emplace_back(std::make_unique<Worker>("Worker " + std::to_string(i), 1));
 }
 
 void TaskManager::addTask(std::shared_ptr<Task> task) {
-
 	bool added = false;
 	while (!added) {
 		for (auto & worker : workers) {
@@ -23,36 +21,19 @@ void TaskManager::addTask(std::shared_ptr<Task> task) {
 	}
 }
 
-void TaskManager::finish()
-{
-	finished = true;
-}
+bool TaskManager::isFinished() {
+	stopFreeWorkers();
 
-void TaskManager::run()
-{
-	finished = false;
-	thread.join();
-}
-
-bool TaskManager::isFinished()
-{
-	bool allDone = false;
+	bool allDone = true;
 	for (const auto& worker : workers)
-		allDone &= worker->isFree();
+		allDone &= worker->isStopped();
+
 	return allDone;
 }
 
-void TaskManager::execute()
+void TaskManager::stopFreeWorkers()
 {
-	while (true) {
-		for (auto & worker : workers) {
-			if (worker->isFree())
-				worker->stop();
-			else
-				worker->run();
-		}
-		if (finished)
-			return;
-		std::this_thread::sleep_for(std::chrono::seconds(1));
-	}
+	for (const auto& worker : workers)
+		if (!worker->isStopped() && worker->isFree())
+			worker->stop();
 }

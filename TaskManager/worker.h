@@ -11,10 +11,10 @@ class Task;
 class Worker
 {
 public:
-	Worker(const size_t max);
+	Worker(const std::string name, const size_t max);
 	bool tryAddTask(std::shared_ptr<Task> task);
-	void run();
 	void stop();
+	bool isStopped();
 	bool isFree();
 
 private:
@@ -22,8 +22,8 @@ private:
 
 private:
 	std::thread thread;
+	const std::string name;
 	const size_t max;
-	bool running;
 	bool stopped;
 	BlockingQueue<std::shared_ptr<Task>> tasks;
 };
